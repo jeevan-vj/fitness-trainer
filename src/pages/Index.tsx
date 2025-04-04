@@ -7,6 +7,7 @@ import FitnessPlans from '@/components/FitnessPlans';
 import Testimonials from '@/components/Testimonials';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
+import { GallerySection } from '@/components/GallerySection';
 
 const Index = () => {
   return (
@@ -15,6 +16,7 @@ const Index = () => {
       <main className="flex-grow">
         <Hero />
         <TrainerProfile />
+        <GallerySection />
         <FitnessPlans />
         <Testimonials />
         <CTASection />
