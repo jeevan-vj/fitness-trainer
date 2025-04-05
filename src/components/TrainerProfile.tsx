@@ -2,8 +2,17 @@
 import React from 'react';
 import { Award, CheckCircle, Clock, Users } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext
+} from '@/components/ui/carousel';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const TrainerProfile = () => {
+  const isMobile = useIsMobile();
   const skills = [
     "Strength Training", 
     "Weight Management", 
@@ -17,6 +26,25 @@ const TrainerProfile = () => {
     { name: "Certified Personal Trainer (CPT)", org: "National Academy of Sports Medicine" },
     { name: "Strength and Conditioning Specialist", org: "National Strength and Conditioning Association" },
     { name: "Nutrition Coach", org: "Precision Nutrition" }
+  ];
+
+  const trainerImages = [
+    {
+      src: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80", 
+      alt: "John Fitness - Personal Trainer"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80", 
+      alt: "John coaching a client"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80", 
+      alt: "John leading a group workout"
+    },
+    {
+      src: "https://images.unsplash.com/photo-1594381898411-846e7d193883?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80", 
+      alt: "John demonstrating equipment"
+    }
   ];
 
   return (
@@ -33,12 +61,36 @@ const TrainerProfile = () => {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           <div className="lg:w-2/5">
             <div className="sticky top-24">
-              <div className="rounded-xl overflow-hidden shadow-lg mb-6 aspect-square">
-                <img 
-                  src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" 
-                  alt="John Fitness - Personal Trainer" 
-                  className="w-full h-full object-cover"
-                />
+              <div className="mb-6 aspect-square overflow-hidden rounded-xl shadow-lg">
+                <Carousel
+                  opts={{
+                    loop: true,
+                    align: "start",
+                  }}
+                  className="w-full"
+                >
+                  <CarouselContent>
+                    {trainerImages.map((image, index) => (
+                      <CarouselItem key={index}>
+                        <div className="relative h-full w-full aspect-square">
+                          <img
+                            src={image.src}
+                            alt={image.alt}
+                            className="h-full w-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  
+                  {!isMobile && (
+                    <>
+                      <CarouselPrevious className="left-2 bg-white/80 backdrop-blur-sm" />
+                      <CarouselNext className="right-2 bg-white/80 backdrop-blur-sm" />
+                    </>
+                  )}
+                </Carousel>
               </div>
               
               <div className="grid grid-cols-3 gap-4 text-center">
