@@ -2,6 +2,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ConsultationFormTrigger } from '@/components/ConsultationForm';
 
 const PlansHero = () => {
   return (
@@ -22,9 +23,11 @@ const PlansHero = () => {
               Get Started Today
               <ArrowRight size={18} />
             </Button>
-            <Button variant="outline" className="border-fitness-primary text-fitness-primary hover:bg-fitness-primary/10 px-6 py-6 rounded-lg text-base">
-              Book a Free Consultation
-            </Button>
+            <ConsultationFormTrigger>
+              <Button variant="outline" className="border-fitness-primary text-fitness-primary hover:bg-fitness-primary/10 px-6 py-6 rounded-lg text-base">
+                Book a Free Consultation
+              </Button>
+            </ConsultationFormTrigger>
           </div>
           
           <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6">

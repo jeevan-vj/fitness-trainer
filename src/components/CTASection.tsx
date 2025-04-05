@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { ConsultationFormTrigger } from '@/components/ConsultationForm';
 
 const CTASection = () => {
   return (
@@ -24,9 +25,11 @@ const CTASection = () => {
             <Button className="bg-fitness-primary hover:bg-fitness-primary/90 text-white px-8 py-6">
               Get Started Today <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button variant="outline" className="border-fitness-secondary text-fitness-secondary hover:bg-fitness-secondary/10 py-6">
-              Book a Consultation
-            </Button>
+            <ConsultationFormTrigger>
+              <Button variant="outline" className="border-fitness-secondary text-fitness-secondary hover:bg-fitness-secondary/10 py-6">
+                Book a Consultation
+              </Button>
+            </ConsultationFormTrigger>
           </div>
           
           <p className="mt-6 text-sm text-gray-500">
