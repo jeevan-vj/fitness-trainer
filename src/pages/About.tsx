@@ -1,8 +1,11 @@
 
 import React from 'react';
 import MobileNavbar from '@/components/MobileNavbar';
-import { GraduationCap, Clock, Award, Users, Check, Heart } from 'lucide-react';
+import { GraduationCap, Clock, Award, Users, Check, Heart, Star, Trophy, Medal, ThumbsUp, Dumbbell } from 'lucide-react';
 import Footer from '@/components/Footer';
+import TrainerProfile from '@/components/TrainerProfile';
+import Testimonials from '@/components/Testimonials';
+import { GallerySection } from '@/components/GallerySection';
 
 const About = () => {
   return (
@@ -75,8 +78,96 @@ const About = () => {
           </div>
         </section>
 
-        {/* Trainer Credentials */}
+        {/* Add Trainer Profile Component */}
+        <TrainerProfile />
+
+        {/* Add Testimonials Component */}
+        <Testimonials />
+
+        {/* Client Achievements Section */}
         <section className="py-12 px-4 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Client Achievements</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: <Trophy className="text-fitness-primary h-8 w-8" />,
+                  stat: "500+",
+                  title: "Weight Loss Goals",
+                  description: "Clients who reached their target weight"
+                },
+                {
+                  icon: <Medal className="text-fitness-primary h-8 w-8" />,
+                  stat: "250+",
+                  title: "Competitive Events",
+                  description: "Clients who completed marathons, triathlons & competitions"
+                },
+                {
+                  icon: <ThumbsUp className="text-fitness-primary h-8 w-8" />,
+                  stat: "85%",
+                  title: "Lifestyle Change",
+                  description: "Clients who maintained results over 2+ years"
+                }
+              ].map((item, i) => (
+                <div key={i} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover-scale">
+                  <div className="flex flex-col items-center text-center">
+                    <div className="mb-3">{item.icon}</div>
+                    <div className="text-3xl font-bold text-fitness-primary mb-2">{item.stat}</div>
+                    <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
+                    <p className="text-gray-600 text-sm">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Add Gallery Section */}
+        <GallerySection />
+
+        {/* Fitness Philosophy Section */}
+        <section className="py-12 px-4 bg-white">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Our Fitness Philosophy</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  icon: <Dumbbell className="text-fitness-primary h-6 w-6" />,
+                  title: "Progressive Overload",
+                  description: "We believe in gradually increasing the weight, frequency, or number of repetitions in your strength training routine."
+                },
+                {
+                  icon: <Check className="text-fitness-primary h-6 w-6" />,
+                  title: "Consistency Over Intensity",
+                  description: "Regular, moderate exercise yields better long-term results than occasional intense workouts."
+                },
+                {
+                  icon: <Users className="text-fitness-primary h-6 w-6" />,
+                  title: "Community Support",
+                  description: "A supportive community helps maintain motivation and accountability."
+                },
+                {
+                  icon: <Heart className="text-fitness-primary h-6 w-6" />,
+                  title: "Balance is Key",
+                  description: "We emphasize the importance of balancing exercise, nutrition, and recovery."
+                }
+              ].map((item, i) => (
+                <div key={i} className="flex p-4 gap-4 items-start">
+                  <div className="bg-fitness-primary bg-opacity-10 p-3 rounded-full">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">{item.title}</h3>
+                    <p className="text-gray-600 text-sm">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Trainer Credentials */}
+        <section className="py-12 px-4 bg-gray-50">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center">Trainer Credentials</h2>
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
