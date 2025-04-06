@@ -16,8 +16,8 @@ const TestimonialCard = ({ content, author, role, rating, image }: TestimonialPr
   return (
     <RevealAnimation variant="zoom-in" delay={100} threshold={0.2}>
       <Card className="h-full">
-        <CardContent className="p-6">
-          <div className="mb-4 flex">
+        <CardContent className="p-4 md:p-6">
+          <div className="mb-3 flex">
             {[...Array(5)].map((_, i) => (
               <Star 
                 key={i} 
@@ -27,10 +27,12 @@ const TestimonialCard = ({ content, author, role, rating, image }: TestimonialPr
             ))}
           </div>
           
-          <blockquote className="text-gray-700 mb-6">"{content}"</blockquote>
+          <blockquote className="text-gray-700 mb-4 md:mb-6 text-sm md:text-base line-clamp-4 md:line-clamp-none">
+            "{content}"
+          </blockquote>
           
           <div className="flex items-center">
-            <div className="h-12 w-12 rounded-full overflow-hidden mr-4">
+            <div className="h-10 w-10 md:h-12 md:w-12 rounded-full overflow-hidden mr-3 md:mr-4">
               <img 
                 src={image} 
                 alt={author} 
@@ -38,8 +40,8 @@ const TestimonialCard = ({ content, author, role, rating, image }: TestimonialPr
               />
             </div>
             <div>
-              <p className="font-medium">{author}</p>
-              <p className="text-sm text-gray-500">{role}</p>
+              <p className="font-medium text-sm md:text-base">{author}</p>
+              <p className="text-xs md:text-sm text-gray-500">{role}</p>
             </div>
           </div>
         </CardContent>
