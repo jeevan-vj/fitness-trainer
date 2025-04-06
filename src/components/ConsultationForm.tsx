@@ -21,8 +21,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerFooter, DrawerTrigger } from "@/components/ui/drawer";
-import { useState, useEffect } from "react";
 import { Check, ArrowRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Form schema with validation
 const formSchema = z.object({
@@ -48,20 +48,8 @@ interface ConsultationFormProps {
 }
 
 export function ConsultationForm({ open, onOpenChange, onSuccess }: ConsultationFormProps) {
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useIsMobile();
   const { toast } = useToast();
-
-  // Check if device is mobile
-  useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    
-    return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
 
   // Form setup
   const form = useForm<ConsultationFormValues>({
@@ -340,7 +328,7 @@ export function ConsultationForm({ open, onOpenChange, onSuccess }: Consultation
     <>
       {isMobile ? (
         <Drawer open={open} onOpenChange={onOpenChange}>
-          <DrawerContent className="px-4 pb-6">
+          <DrawerContent className="px-4 pb-6 max-h-[90vh] overflow-y-auto">
             <DrawerHeader className="text-center">
               <DrawerTitle className="text-2xl font-bold">Book a Free Consultation</DrawerTitle>
               <DrawerDescription>
@@ -350,6 +338,12 @@ export function ConsultationForm({ open, onOpenChange, onSuccess }: Consultation
             <div className="px-4">
               {formContent}
             </div>
+            <DrawerFooter className="flex justify-start items-center px-2 py-2 bg-gray-50 rounded-md mt-2">
+              <div className="flex items-center text-sm text-gray-600">
+                <Check className="mr-2 h-4 w-4 text-fitness-primary" />
+                Your information is secure and will never be shared.
+              </div>
+            </DrawerFooter>
           </DrawerContent>
         </Drawer>
       ) : (
