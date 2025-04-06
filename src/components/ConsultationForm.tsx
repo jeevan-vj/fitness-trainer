@@ -371,7 +371,7 @@ export function ConsultationForm({ open, onOpenChange, onSuccess }: Consultation
 
 // Exportable trigger component
 export function ConsultationFormTrigger({ children }: { children: React.ReactNode }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
   
   return (
     <>
