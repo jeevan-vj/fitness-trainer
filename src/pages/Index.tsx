@@ -29,7 +29,9 @@ const Index = () => {
           <FitnessPlans />
         </RevealAnimation>
         
-        <Testimonials />
+        <RevealAnimation variant="fade-up" delay={300}>
+          <Testimonials />
+        </RevealAnimation>
         
         <RevealAnimation variant="zoom-in" delay={400}>
           <CTASection />

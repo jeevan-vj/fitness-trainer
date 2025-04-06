@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TestimonialCard from './TestimonialCard';
 import { 
   Carousel, 
@@ -10,9 +10,13 @@ import {
 } from '@/components/ui/carousel';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { SwipeIndicator } from '@/components/ui/swipe-indicator';
+import { RevealAnimation } from '@/hooks/use-scroll-reveal';
 
 const Testimonials = () => {
   const isMobile = useIsMobile();
+  const [api, setApi] = useState<any>(null);
+  const [autoPlayInterval, setAutoPlayInterval] = useState<NodeJS.Timeout | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   
   const testimonials = [
     {
@@ -52,41 +56,88 @@ const Testimonials = () => {
     }
   ];
 
+  // Set up auto-scrolling
+  useEffect(() => {
+    if (!api) return;
+    
+    // Clear any existing interval when component unmounts or api changes
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+    }
+    
+    // Only set up auto scroll if not paused
+    if (!isPaused) {
+      const interval = setInterval(() => {
+        api.scrollNext();
+      }, 5000); // Change slide every 5 seconds
+      
+      setAutoPlayInterval(interval);
+    }
+    
+    // Cleanup function
+    return () => {
+      if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+      }
+    };
+  }, [api, isPaused]);
+  
+  // Pause auto-scrolling when user interacts with carousel
+  const handleMouseEnter = () => setIsPaused(true);
+  const handleMouseLeave = () => setIsPaused(false);
+  
+  // Handle touch events for mobile
+  const handleTouchStart = () => setIsPaused(true);
+  const handleTouchEnd = () => {
+    // Add a short delay before resuming to avoid immediate scroll after touch interaction
+    setTimeout(() => setIsPaused(false), 3000);
+  };
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="mobile-container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Success Stories</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what clients have to say about their 
-            experiences working with our fitness plans.
-          </p>
-        </div>
+        <RevealAnimation variant="fade-up" delay={100}>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Success Stories</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Don't just take our word for it. Here's what clients have to say about their 
+              experiences working with our fitness plans.
+            </p>
+          </div>
+        </RevealAnimation>
         
         {isMobile && <SwipeIndicator />}
         
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full"
+        <div 
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
-          <CarouselContent className="-ml-2 md:-ml-4">
-            {testimonials.map((testimonial, index) => (
-              <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                <TestimonialCard {...testimonial} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          
-          {!isMobile && (
-            <>
-              <CarouselPrevious className="hidden md:flex -left-12 lg:-left-16" />
-              <CarouselNext className="hidden md:flex -right-12 lg:-right-16" />
-            </>
-          )}
-        </Carousel>
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            setApi={setApi}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                  <TestimonialCard {...testimonial} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            
+            {!isMobile && (
+              <>
+                <CarouselPrevious className="hidden md:flex -left-12 lg:-left-16" />
+                <CarouselNext className="hidden md:flex -right-12 lg:-right-16" />
+              </>
+            )}
+          </Carousel>
+        </div>
       </div>
     </section>
   );
