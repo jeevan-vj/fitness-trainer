@@ -8,6 +8,7 @@ import Testimonials from '@/components/Testimonials';
 import CTASection from '@/components/CTASection';
 import Footer from '@/components/Footer';
 import { GallerySection } from '@/components/GallerySection';
+import { RevealAnimation } from '@/hooks/use-scroll-reveal';
 
 const Index = () => {
   return (
@@ -15,11 +16,26 @@ const Index = () => {
       <MobileNavbar />
       <main className="flex-grow">
         <Hero />
-        <TrainerProfile />
-        <GallerySection />
-        <FitnessPlans />
-        <Testimonials />
-        <CTASection />
+        
+        <RevealAnimation>
+          <TrainerProfile />
+        </RevealAnimation>
+        
+        <RevealAnimation variant="fade-up" delay={100}>
+          <GallerySection />
+        </RevealAnimation>
+        
+        <RevealAnimation variant="fade-up" delay={200}>
+          <FitnessPlans />
+        </RevealAnimation>
+        
+        <RevealAnimation variant="fade-up" delay={300}>
+          <Testimonials />
+        </RevealAnimation>
+        
+        <RevealAnimation variant="zoom-in" delay={400}>
+          <CTASection />
+        </RevealAnimation>
       </main>
       <Footer />
     </div>

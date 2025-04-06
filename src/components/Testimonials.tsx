@@ -1,8 +1,23 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TestimonialCard from './TestimonialCard';
+import { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious 
+} from '@/components/ui/carousel';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { SwipeIndicator } from '@/components/ui/swipe-indicator';
+import { RevealAnimation } from '@/hooks/use-scroll-reveal';
 
 const Testimonials = () => {
+  const isMobile = useIsMobile();
+  const [api, setApi] = useState<any>(null);
+  const [autoPlayInterval, setAutoPlayInterval] = useState<NodeJS.Timeout | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  
   const testimonials = [
     {
       content: "Working with John completely transformed my approach to fitness. His personalized plan helped me lose 30 pounds in 4 months, and I've kept it off!",
@@ -24,24 +39,104 @@ const Testimonials = () => {
       role: "Improved marathon time by 15 min",
       rating: 4,
       image: "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1772&q=80"
+    },
+    {
+      content: "I was skeptical at first, but after just 8 weeks I've seen incredible progress. The workout routines are challenging but never boring.",
+      author: "David Kim",
+      role: "Completed first triathlon",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"
+    },
+    {
+      content: "The personalized nutrition plan was a game-changer for me. I've never felt better or had more energy throughout my day.",
+      author: "Jessica Taylor",
+      role: "Overcame plateau after 2 years",
+      rating: 4,
+      image: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80"
     }
   ];
+
+  // Set up auto-scrolling
+  useEffect(() => {
+    if (!api) return;
+    
+    // Clear any existing interval when component unmounts or api changes
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+    }
+    
+    // Only set up auto scroll if not paused
+    if (!isPaused) {
+      const interval = setInterval(() => {
+        api.scrollNext();
+      }, 5000); // Change slide every 5 seconds
+      
+      setAutoPlayInterval(interval);
+    }
+    
+    // Cleanup function
+    return () => {
+      if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+      }
+    };
+  }, [api, isPaused]);
+  
+  // Pause auto-scrolling when user interacts with carousel
+  const handleMouseEnter = () => setIsPaused(true);
+  const handleMouseLeave = () => setIsPaused(false);
+  
+  // Handle touch events for mobile
+  const handleTouchStart = () => setIsPaused(true);
+  const handleTouchEnd = () => {
+    // Add a short delay before resuming to avoid immediate scroll after touch interaction
+    setTimeout(() => setIsPaused(false), 3000);
+  };
 
   return (
     <section className="py-16 bg-gray-50">
       <div className="mobile-container">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Success Stories</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what clients have to say about their 
-            experiences working with our fitness plans.
-          </p>
-        </div>
+        <RevealAnimation variant="fade-up" delay={100}>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Success Stories</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Don't just take our word for it. Here's what clients have to say about their 
+              experiences working with our fitness plans.
+            </p>
+          </div>
+        </RevealAnimation>
         
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <TestimonialCard key={index} {...testimonial} />
-          ))}
+        {isMobile && <SwipeIndicator />}
+        
+        <div 
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            setApi={setApi}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                  <TestimonialCard {...testimonial} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            
+            {!isMobile && (
+              <>
+                <CarouselPrevious className="hidden md:flex -left-12 lg:-left-16" />
+                <CarouselNext className="hidden md:flex -right-12 lg:-right-16" />
+              </>
+            )}
+          </Carousel>
         </div>
       </div>
     </section>

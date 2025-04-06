@@ -90,4 +90,40 @@
   .mobile-container {
     @apply px-4 md:px-8 lg:px-12 max-w-7xl mx-auto;
   }
+
+  /* Add smooth scrolling to the entire page */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Add animation utilities */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 4s ease-in-out infinite;
+  }
+}
+
+/* Add new keyframes */
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
